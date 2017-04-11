@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Asteroid Blaster</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_trial">TrialActivity</string>
+
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="title_activity_game">GameActivity</string>
+
+    <string name="title_activity_leaderboard">LeaderboardActivity</string>
+
+    <string name="title_activity_shop">ShopActivity</string>
+</resources>
