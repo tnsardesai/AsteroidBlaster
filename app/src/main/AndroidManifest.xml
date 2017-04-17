@@ -25,21 +25,25 @@
             android:name=".SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_game"
+            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".LeaderboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_leaderboard"
+            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".ShopActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_shop"
+            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme"></activity>
     </application>
 

@@ -94,17 +94,13 @@ public class MainActivity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        mContentView.setOnClickListener(new View.OnClickListener() {
+        /*mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 auto_hide();
             }
-        });
+        });*/
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     // Called when user clicks settings_main_button
@@ -137,13 +133,13 @@ public class MainActivity extends AppCompatActivity {
         // are available.
         delayedHide(100);
     }
-
+/*
     private void auto_hide(){
         if (AUTO_HIDE) {
             delayedHide(AUTO_HIDE_DELAY_MILLIS);
         }
     }
-
+*/
     private void toggle() {
         if (mVisible) {
             hide();
