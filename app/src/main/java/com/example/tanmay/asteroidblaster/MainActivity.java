@@ -108,18 +108,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+    // Called when user clicks game_main_button
     public void playGame(View view){
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+    // Called when user clicks leaderboard_main_button
     public void openLeadersboard(View view){
         Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
     }
+    // Called when user clicks shop_main_button
     public void openShop(View view){
         Intent intent = new Intent(this, ShopActivity.class);
         startActivity(intent);
     }
+    // Called when user clicks exit_main_button
     public void exit(View view){
         android.os.Process.killProcess(android.os.Process.myPid());
     }

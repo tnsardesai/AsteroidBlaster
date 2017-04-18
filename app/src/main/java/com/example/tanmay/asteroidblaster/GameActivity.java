@@ -1,11 +1,6 @@
 package com.example.tanmay.asteroidblaster;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +8,6 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -91,26 +84,13 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
-    ImageView scope;
-    SensorManager sensorManager;
-    Sensor sensor;
-    long lastTimeStamp = 0;
-    float xPosition,xAcceleration,xVelocity = 0.0f;
-    float yPosition,yAcceleration,yVelocity = 0.0f;
-    float zPosition,zAcceleration,zVelocity = 0.0f;
-    public float framTime = 0.666f;
-
+    private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
-
-        scope = (ImageView) findViewById(R.id.scope);
-
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
@@ -119,19 +99,25 @@ public class GameActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        float height = displayMetrics.heightPixels;
-        float width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
 
-        scope.setX(width/2 - 100);
-        scope.setY(height/2 - 100);
+        gameView = new GameView(this,height,width);
 
-        /*mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auto_hide();
-            }
-        });*/
+        setContentView(gameView);
 
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        gameView.pause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        gameView.resume();
     }
 
     @Override
@@ -143,43 +129,6 @@ public class GameActivity extends AppCompatActivity {
         // are available.
         delayedHide(100);
     }
-
-    public void onResume() {
-        super.onResume();
-        sensorManager.registerListener(rotateListener, sensor,
-                SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    public void onStop() {
-        super.onStop();
-        sensorManager.unregisterListener(rotateListener);
-    }
-
-    public SensorEventListener rotateListener = new SensorEventListener() {
-        public void onAccuracyChanged(Sensor sensor, int acc) { }
-
-        public void onSensorChanged(SensorEvent event) {
-
-            xAcceleration = event.values[0];
-            yAcceleration= event.values[1];
-            zAcceleration= event.values[2];
-
-            xVelocity += xAcceleration*framTime;
-            yVelocity += yAcceleration*framTime;
-            zVelocity += zAcceleration*framTime;
-
-            float x = xVelocity* framTime;
-            float y = yVelocity*framTime;
-            float z = zVelocity*framTime;
-            scope.setX(scope.getX() + 10*x);
-            scope.setY(scope.getY() + 10*y);
-
-
-            //textX.setText("X : " + (int)x + " rad/s");
-            //textY.setText("Y : " + (int)y + " rad/s");
-            //textZ.setText("Z : " + (int)z + " rad/s");
-        }
-    };
 
     private void auto_hide(){
         if (AUTO_HIDE) {
