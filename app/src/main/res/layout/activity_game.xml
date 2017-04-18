@@ -167,17 +167,11 @@
 
             <ImageView
                 android:id="@+id/scope"
-                android:layout_width="500px"
-                android:layout_height="500px"
-                android:layout_below="@+id/asteroid5"
+                android:layout_width="200px"
+                android:layout_height="200px"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_toStartOf="@+id/asteroid2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/game_scope" />
 
             <android.support.constraint.ConstraintLayout
