@@ -26,7 +26,7 @@ public class GameActivity extends AppCompatActivity {
 
         linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setBackgroundColor(Color.BLACK);
+        linearLayout.setBackgroundColor(Color.RED);
 
         gameView = new GameView(this,size.x,size.y,linearLayout);
 
