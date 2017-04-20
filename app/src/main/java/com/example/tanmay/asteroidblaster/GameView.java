@@ -8,8 +8,14 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.RunnableFuture;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class GameView extends SurfaceView implements Runnable{
 
@@ -34,7 +40,11 @@ public class GameView extends SurfaceView implements Runnable{
 
     private Planet planet;
 
-    public GameView (Context context, int screenX, int screenY) {
+    TextView score_text;
+    TextView score_value;
+    private int score;
+
+    public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout) {
         super(context);
 
         surfaceHolder = getHolder();
@@ -59,6 +69,18 @@ public class GameView extends SurfaceView implements Runnable{
         blast = new Blast(context);
 
         planet = new Planet(context,screenX,screenY);
+
+        score = 0;
+
+        score_text = new TextView(context);
+        score_text.setText("SCORE: ");
+        score_text.setTextColor(Color.WHITE);
+        linearLayout.addView(score_text);
+
+        score_value = new TextView(context);
+        score_value.setText(String.valueOf(score));
+        score_value.setTextColor(Color.WHITE);
+        linearLayout.addView(score_value);
 
     }
 
@@ -99,6 +121,7 @@ public class GameView extends SurfaceView implements Runnable{
         blast.setX(-500);
         blast.setY(-500);
 
+
         //Updating the stars with player speed
         for (Star s : stars) {
             s.update();
@@ -115,12 +138,14 @@ public class GameView extends SurfaceView implements Runnable{
             if(distance < 100){
                 blast.setX(asteroids[i].getX());
                 blast.setY(asteroids[i].getY());
-
+                score++;
+                //score_value.setText(String.valueOf(score));
 
                 asteroids[i].place();
             }
         }
     }
+
 
     private void draw() {
         if(surfaceHolder.getSurface().isValid()){

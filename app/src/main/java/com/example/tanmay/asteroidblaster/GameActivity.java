@@ -13,6 +13,8 @@ public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
 
+    LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +24,15 @@ public class GameActivity extends AppCompatActivity {
         Point size =new Point();
         display.getSize(size);
 
-        gameView = new GameView(this,size.x,size.y);
+        linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setBackgroundColor(Color.BLACK);
 
-        setContentView(gameView);
+        gameView = new GameView(this,size.x,size.y,linearLayout);
+
+        linearLayout.addView(gameView);
+
+        setContentView(linearLayout);
 
     }
 
