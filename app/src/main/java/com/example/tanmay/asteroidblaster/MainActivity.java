@@ -1,6 +1,7 @@
 package com.example.tanmay.asteroidblaster;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.main);
+        mp.setLooping(true);
+        mp.start();
     }
 
     // Called when user clicks game_main_button

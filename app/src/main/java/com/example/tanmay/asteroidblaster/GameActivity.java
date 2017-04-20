@@ -2,6 +2,7 @@ package com.example.tanmay.asteroidblaster;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -26,13 +27,17 @@ public class GameActivity extends AppCompatActivity {
 
         linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setBackgroundColor(Color.RED);
+        linearLayout.setBackgroundColor(Color.BLACK);
 
         gameView = new GameView(this,size.x,size.y,linearLayout);
 
         linearLayout.addView(gameView);
 
         setContentView(linearLayout);
+
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.game);
+        mp.setLooping(true);
+        mp.start();
 
     }
 

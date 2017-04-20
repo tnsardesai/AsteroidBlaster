@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -40,11 +42,15 @@ public class GameView extends SurfaceView implements Runnable{
 
     private Planet planet;
 
-    private Score score;
+    private Status status;
+
+    Context context;
 
 
     public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout) {
         super(context);
+
+        this.context = context;
 
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -69,7 +75,8 @@ public class GameView extends SurfaceView implements Runnable{
 
         planet = new Planet(context,screenX,screenY);
 
-        score = new Score(context,linearLayout);
+        status = new Status(context,linearLayout);
+
 
     }
 
@@ -120,21 +127,60 @@ public class GameView extends SurfaceView implements Runnable{
         for(int i=0; i<asteroidCount; i++){
             asteroids[i].update();
 
-            double distance = Math.sqrt(Math.pow((double)(
+            double distance_scope_asteroid = Math.sqrt(Math.pow((double)(
                     scope.getCollisionX() - asteroids[i].getCollisionX()),2) +
                     Math.pow((double)(scope.getCollisionY() - asteroids[i].getCollisionY()),2));
 
-            if(distance < 100){
+            if(distance_scope_asteroid < 100){
                 blast.setX(asteroids[i].getX());
                 blast.setY(asteroids[i].getY());
                 //score++;
                 //score_value.setText(String.valueOf(score));
-                score.update();
+                status.update_score();
 
                 asteroids[i].place();
             }
+
+            double distance_asteroid_planet = Math.sqrt(Math.pow((double)(
+                    asteroids[i].getCollisionX() - planet.getCollisionX()),2) +
+                    Math.pow((double)(asteroids[i].getCollisionY() - planet.getCollisionY()),2));
+
+            if(distance_asteroid_planet < 300 ){
+                blast.setX(asteroids[i].getX());
+                blast.setY(asteroids[i].getY());
+                MediaPlayer mp = MediaPlayer.create(context, R.raw.damage);;
+                //if(mp!=null) {
+                //    mp.reset();
+                    //mp.prepare();
+                //    mp.release();
+                //    mp = null;
+                //}
+
+                mp.start();
+
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.stop();
+                        if (mp != null) {
+                            mp.release();
+                        }
+
+                    }
+                });
+
+                status.update_health();
+
+                if (status.getHealth() == 1){
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+
+                asteroids[i].place();
+            }
+
         }
     }
+
 
 
     private void draw() {

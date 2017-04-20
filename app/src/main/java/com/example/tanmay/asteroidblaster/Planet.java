@@ -14,14 +14,23 @@ public class Planet{
     private int collisionX;
     private int collisionY;
 
+    private final int PLANET_HEIGHT = 400;
+    private final int PLANET_WIDTH = 500;
+
+
+
     //constructor
     public Planet(Context context, int screenX, int screenY) {
         //getting boom image from drawable resource
         bitmap = BitmapFactory.decodeResource
                 (context.getResources(), R.drawable.planet);
+        bitmap = Bitmap.createScaledBitmap(bitmap, PLANET_HEIGHT, PLANET_WIDTH, true);
 
         x = screenX/2 - bitmap.getWidth()/2;
         y = screenY/2 - bitmap.getHeight()/2;
+
+        collisionX = screenX/2;
+        collisionY = screenY/2;
 
     }
 
@@ -49,6 +58,17 @@ public class Planet{
     public int getY() {
         return y;
     }
+
+
+    public int getCollisionX(){
+        return collisionX;
+    }
+
+    public int getCollisionY(){
+        return  collisionY;
+    }
+
+
 
 
 }
