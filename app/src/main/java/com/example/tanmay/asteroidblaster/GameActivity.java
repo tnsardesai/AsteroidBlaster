@@ -1,14 +1,14 @@
 package com.example.tanmay.asteroidblaster;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Display;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
@@ -44,4 +44,5 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
         gameView.resume();
     }
+
 }

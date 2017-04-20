@@ -3,8 +3,6 @@ package com.example.tanmay.asteroidblaster;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
-
 
 public class Scope {
 
@@ -27,10 +25,10 @@ public class Scope {
     private int touchX;
     private int touchY;
 
-    private final int MIN_SPEED = 0;
-    private final int MAX_SPEED = 20;
-
     private final int SCOPE_SIZE = 200;
+
+    private int collisionX;
+    private int collisionY;
 
     public Scope(Context context, int screenX, int screenY){
         x = screenX/2 - SCOPE_SIZE/2;
@@ -47,6 +45,10 @@ public class Scope {
         maxY = screenY-SCOPE_SIZE;
 
         moving = false;
+
+
+        collisionX = x + SCOPE_SIZE/2;
+        collisionY = y + SCOPE_SIZE/2;
     }
 
     public void setMoving(int X, int Y){
@@ -66,42 +68,33 @@ public class Scope {
                 speedX = ((touchX-x - SCOPE_SIZE/2)/distance) ;
                 speedY = ((touchY-y - SCOPE_SIZE/2)/distance) ;
 
-                double speedMag = Math.sqrt(Math.pow((double)(speedX),2) + Math.pow((double)(speedY),2));
+                double speedMag = Math.sqrt(Math.pow((speedX),2) + Math.pow((speedY),2));
 
-                speedX = 20*speedX/speedMag;
-                speedY = 20*speedY/speedMag;
+                speedX = 25*speedX/speedMag;
+                speedY = 25*speedY/speedMag;
 
             }
         }
         else {
-            if (speedX <=0.05 && speedX >= -0.05){
+            if (speedX <=0.2 && speedX >= -0.02){
                 speedX=0;
             }
-            else if(speedX<-0.05){
-                speedX += 0.1;
+            else if(speedX<-0.2){
+                speedX += 0.4;
             }
-            else if (speedX>0.05){
-                speedX -= 0.1;
+            else if (speedX>0.2){
+                speedX -= 0.4;
             }
-            if (speedY <=0.05 && speedY >= -0.05){
+            if (speedY <=0.2 && speedY >= -0.2){
                 speedY=0;
             }
-            else if(speedY<-0.05){
-                speedY += 0.1;
+            else if(speedY<-0.2){
+                speedY += 0.4;
             }
-            else if (speedY>0.05){
-                speedY -= 0.1;
+            else if (speedY>0.2){
+                speedY -= 0.4;
             }
 
-            Log.d("Speed Not moving", "speed x: " + String.valueOf(speedX) + "speed y: " + String.valueOf(speedY));
-        }
-
-        if (speedX >= MAX_SPEED){
-            speedX = MAX_SPEED;
-        }
-
-        if (speedY >= MAX_SPEED){
-            speedY = MAX_SPEED;
         }
 
         x += speedX;
@@ -120,7 +113,24 @@ public class Scope {
             x=maxX;
         }
 
+        collisionX = x + SCOPE_SIZE/2;
+        collisionY = y + SCOPE_SIZE/2;
+
     }
+
+    //adding a setter to x coordinate so that we can change it after collision
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getCollisionX(){
+        return collisionX;
+    }
+
+    public int getCollisionY(){
+        return  collisionY;
+    }
+
 
     public Bitmap getBitmap() {
         return bitmap;

@@ -16,4 +16,8 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed(){
+        //do nothing
+    }
 }

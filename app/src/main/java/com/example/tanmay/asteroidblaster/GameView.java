@@ -25,11 +25,17 @@ public class GameView extends SurfaceView implements Runnable{
 
     private ArrayList<Star> stars = new ArrayList<Star>();
 
+    private Asteroid[] asteroids;
 
-    public GameView (Context context,int screenX,int screenY) {
+    private int asteroidCount = 4;
+
+    //defining a boom object to display blast
+    private Blast blast;
+
+    private Planet planet;
+
+    public GameView (Context context, int screenX, int screenY) {
         super(context);
-
-        scope = new Scope(context,screenX,screenY);
 
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -40,6 +46,20 @@ public class GameView extends SurfaceView implements Runnable{
             Star s  = new Star(screenX, screenY);
             stars.add(s);
         }
+
+        //initializing enemy object array
+        asteroids = new Asteroid[asteroidCount];
+        for(int i=0; i<asteroidCount; i++){
+            asteroids[i] = new Asteroid(context, screenX, screenY);
+
+        }
+
+        scope = new Scope(context,screenX,screenY);
+
+        blast = new Blast(context);
+
+        planet = new Planet(context,screenX,screenY);
+
     }
 
     @Override
@@ -76,9 +96,29 @@ public class GameView extends SurfaceView implements Runnable{
     private void update() {
         scope.update();
 
+        blast.setX(-500);
+        blast.setY(-500);
+
         //Updating the stars with player speed
         for (Star s : stars) {
             s.update();
+        }
+
+        //updating the enemy coordinate with respect to player speed
+        for(int i=0; i<asteroidCount; i++){
+            asteroids[i].update();
+
+            double distance = Math.sqrt(Math.pow((double)(
+                    scope.getCollisionX() - asteroids[i].getCollisionX()),2) +
+                    Math.pow((double)(scope.getCollisionY() - asteroids[i].getCollisionY()),2));
+
+            if(distance < 100){
+                blast.setX(asteroids[i].getX());
+                blast.setY(asteroids[i].getY());
+
+
+                asteroids[i].place();
+            }
         }
     }
 
@@ -97,6 +137,31 @@ public class GameView extends SurfaceView implements Runnable{
                 paint.setStrokeWidth(s.getStarWidth());
                 canvas.drawPoint(s.getX(), s.getY(), paint);
             }
+
+            //drawing the enemies
+            for (int i = 0; i < asteroidCount; i++) {
+                canvas.drawBitmap(
+                        asteroids[i].getBitmap(),
+                        asteroids[i].getX(),
+                        asteroids[i].getY(),
+                        paint
+                );
+            }
+
+            //drawing boom image
+            canvas.drawBitmap(
+                    blast.getBitmap(),
+                    blast.getX(),
+                    blast.getY(),
+                    paint
+            );
+
+            canvas.drawBitmap(
+                    planet.getBitmap(),
+                    planet.getX(),
+                    planet.getY(),
+                    paint
+            );
 
             canvas.drawBitmap(scope.getBitmap(),scope.getX(),scope.getY(),paint);
 

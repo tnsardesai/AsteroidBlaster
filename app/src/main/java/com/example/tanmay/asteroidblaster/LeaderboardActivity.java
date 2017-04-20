@@ -16,4 +16,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
     }
 
+    @Override
+    public void onBackPressed(){
+        //do nothing
+    }
+
 }
