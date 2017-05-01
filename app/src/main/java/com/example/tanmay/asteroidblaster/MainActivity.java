@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         startMusic();
 
-        final Button edit_button = (Button) findViewById(R.id.send_name);
-        final EditText edit_name = (EditText) findViewById(R.id.edit_name);
-
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Grinched.ttf");
 
         final TextView play = (TextView)findViewById(R.id.play_main_button);
@@ -42,6 +39,24 @@ public class MainActivity extends AppCompatActivity {
         shop.setTypeface(custom_font);
         exit.setTypeface(custom_font);
 
+    }
+
+    // Called when user clicks game_main_button
+    public void playGame(View view){
+        final Button edit_button = (Button) findViewById(R.id.send_name);
+        final EditText edit_name = (EditText) findViewById(R.id.edit_name);
+
+        final TextView play = (TextView)findViewById(R.id.play_main_button);
+        final TextView leader = (TextView)findViewById(R.id.leadersb_main_button);
+        final TextView shop = (TextView)findViewById(R.id.shop_main_button);
+        final TextView exit = (TextView)findViewById(R.id.exit_main_button);
+
+        edit_button.setVisibility(View.VISIBLE);
+        edit_name.setVisibility(View.VISIBLE);
+        play.setVisibility(View.INVISIBLE);
+        leader.setVisibility(View.INVISIBLE);
+        shop.setVisibility(View.INVISIBLE);
+        exit.setVisibility(View.INVISIBLE);
 
         edit_button.setOnClickListener(
                 new View.OnClickListener()
@@ -54,24 +69,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
 
-                            edit_button.setVisibility(View.INVISIBLE);
-                            edit_name.setVisibility(View.INVISIBLE);
-                            play.setVisibility(View.VISIBLE);
-                            leader.setVisibility(View.VISIBLE);
-                            shop.setVisibility(View.VISIBLE);
-                            exit.setVisibility(View.VISIBLE);
-                            //Log.v("EditText", mEdit.getText().toString());
+                            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                            intent.putExtra("USERNAME",name);
+                            startActivity(intent);
                         }
                     }
                 });
 
-    }
 
-    // Called when user clicks game_main_button
-    public void playGame(View view){
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("USERNAME",name);
-        startActivity(intent);
     }
 
     // Called when user clicks leaderboard_main_button

@@ -15,20 +15,32 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "AsteroidBlaster.db";
 
     private static final String TABLE_HIGH = "highscores";
-
     private static final String HIGH_KEY_ID = "id";
     private static final String HIGH_SCORE = "score";
     private static final String HIGH_NAME = "name";
 
+    private static final String TABLE_SHOP = "shop";
+    private static final String SHOP_KEY_ID = "ID";
+    private static final String SHOP_ITEM = "item";
+    private static final String SHOP_SELECTED = "selected";
 
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_HIGH =
             "CREATE TABLE " + TABLE_HIGH + " (" +
                     HIGH_KEY_ID + " INTEGER PRIMARY KEY," +
                     HIGH_SCORE + " INTEGER," +
                     HIGH_NAME + " TEXT)";
 
-    private static final String SQL_DELETE_ENTRIES =
+    private static final String SQL_CREATE_SHOP =
+            "CREATE TABLE " + TABLE_SHOP + " (" +
+                    SHOP_KEY_ID + " INTEGER PRIMARY KEY," +
+                    SHOP_ITEM + " TEXT," +
+                    SHOP_SELECTED + " INTEGER)";
+
+    private static final String SQL_DELETE_HIGH =
             "DROP TABLE IF EXISTS " + TABLE_HIGH;
+
+    private static final String SQL_DELETE_SHOP =
+            "DROP TABLE IF EXISTS " + TABLE_SHOP;
 
     public DbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,11 +48,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_HIGH);
+        db.execSQL(SQL_CREATE_SHOP);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_HIGH);
+        db.execSQL(SQL_DELETE_SHOP);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

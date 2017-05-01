@@ -15,7 +15,7 @@ public class Planet{
     private int collisionY;
 
     private final int PLANET_HEIGHT = 400;
-    private final int PLANET_WIDTH = 500;
+    private final int PLANET_WIDTH = 400;
 
 
 
@@ -23,7 +23,7 @@ public class Planet{
     public Planet(Context context, int screenX, int screenY) {
         //getting boom image from drawable resource
         bitmap = BitmapFactory.decodeResource
-                (context.getResources(), R.drawable.planet);
+                (context.getResources(), R.drawable.earth);
         bitmap = Bitmap.createScaledBitmap(bitmap, PLANET_HEIGHT, PLANET_WIDTH, true);
 
         x = screenX/2 - bitmap.getWidth()/2;
