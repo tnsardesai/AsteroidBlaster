@@ -25,7 +25,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_HIGH + " (" +
                     HIGH_KEY_ID + " INTEGER PRIMARY KEY," +
                     HIGH_SCORE + " INTEGER," +
-                    HIGH_NAME + "TEXT)";
+                    HIGH_NAME + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_HIGH;

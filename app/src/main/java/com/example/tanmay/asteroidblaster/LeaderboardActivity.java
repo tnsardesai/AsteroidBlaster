@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class LeaderboardActivity extends AppCompatActivity {
 
 
@@ -20,6 +22,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     private static final String HIGH_KEY_ID = "id";
     private static final String HIGH_SCORE = "score";
+    private static final String HIGH_NAME = "name";
 
     public DbHelper mDbHelper = new DbHelper(this);
 
@@ -38,7 +41,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         String[] projection = {
                 HIGH_KEY_ID,
-                HIGH_SCORE
+                HIGH_SCORE,
+                HIGH_NAME
         };
 
         String sortOrder =
@@ -55,29 +59,33 @@ public class LeaderboardActivity extends AppCompatActivity {
         );
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Grinched.ttf");
-        TextView high1 = (TextView)findViewById(R.id.High_score_1);
-        TextView high2 = (TextView)findViewById(R.id.High_score_2);
-        TextView high3 = (TextView)findViewById(R.id.High_score_3);
-        TextView high4 = (TextView)findViewById(R.id.High_score_4);
-        TextView high5 = (TextView)findViewById(R.id.High_score_5);
 
-        high1.setTypeface(custom_font);
-        high2.setTypeface(custom_font);
-        high3.setTypeface(custom_font);
-        high4.setTypeface(custom_font);
-        high5.setTypeface(custom_font);
+        ArrayList<TextView> scores = new ArrayList<TextView>(5);
+        scores.add((TextView)findViewById(R.id.High_score_1));
+        scores.add((TextView)findViewById(R.id.High_score_2));
+        scores.add((TextView)findViewById(R.id.High_score_3));
+        scores.add((TextView)findViewById(R.id.High_score_4));
+        scores.add((TextView)findViewById(R.id.High_score_5));
 
-        cursor.moveToNext();
-        high1.setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
-        cursor.moveToNext();
-        high2.setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
-        cursor.moveToNext();
-        high3.setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
-        cursor.moveToNext();
-        high4.setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
-        cursor.moveToNext();
-        high5.setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
+        ArrayList<TextView> names = new ArrayList<TextView>(5);
+        names.add((TextView)findViewById(R.id.High_name_1));
+        names.add((TextView)findViewById(R.id.High_name_2));
+        names.add((TextView)findViewById(R.id.High_name_3));
+        names.add((TextView)findViewById(R.id.High_name_4));
+        names.add((TextView)findViewById(R.id.High_name_5));
 
+        for (int i=0; i<5;i++){
+            scores.get(i).setTypeface(custom_font);
+            names.get(i).setTypeface(custom_font);
+        }
+
+        int i=0;
+        while(cursor.moveToNext()){
+            scores.get(i).setText(String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
+            names.get(i).setText(cursor.getString(cursor.getColumnIndexOrThrow(HIGH_NAME)));
+            Log.d("Score","name: " + cursor.getString(cursor.getColumnIndexOrThrow(HIGH_NAME)) + "score: " + String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow(HIGH_SCORE))));
+            i++;
+        }
         cursor.close();
 
     }

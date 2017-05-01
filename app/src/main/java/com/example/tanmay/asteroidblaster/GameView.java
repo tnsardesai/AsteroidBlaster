@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -50,11 +51,15 @@ public class GameView extends SurfaceView implements Runnable{
 
     private static final String HIGH_KEY_ID = "id";
     private static final String HIGH_SCORE = "score";
+    private static final String HIGH_NAME = "name";
 
-    public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout) {
+    String name;
+
+    public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout,String name) {
         super(context);
 
         this.context = context;
+        this.name = name;
 
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -174,13 +179,14 @@ public class GameView extends SurfaceView implements Runnable{
 
                     ContentValues values = new ContentValues();
                     values.put(HIGH_SCORE,status.getScore());
+                    values.put(HIGH_NAME,name);
 
                     db.insert(TABLE_HIGH,null,values);
 
                     Intent intent = new Intent(context, LeaderboardActivity.class);
                     context.startActivity(intent);
 
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    //android.os.Process.killProcess(android.os.Process.myPid());
 
                 }
 

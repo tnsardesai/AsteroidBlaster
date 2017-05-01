@@ -1,12 +1,16 @@
 package com.example.tanmay.asteroidblaster;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +18,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mp;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,23 +27,50 @@ public class MainActivity extends AppCompatActivity {
 
         startMusic();
 
+        final Button edit_button = (Button) findViewById(R.id.send_name);
+        final EditText edit_name = (EditText) findViewById(R.id.edit_name);
+
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Grinched.ttf");
 
-        TextView play = (TextView)findViewById(R.id.play_main_button);
-        TextView leader = (TextView)findViewById(R.id.leadersb_main_button);
-        TextView shop = (TextView)findViewById(R.id.shop_main_button);
-        TextView exit = (TextView)findViewById(R.id.exit_main_button);
+        final TextView play = (TextView)findViewById(R.id.play_main_button);
+        final TextView leader = (TextView)findViewById(R.id.leadersb_main_button);
+        final TextView shop = (TextView)findViewById(R.id.shop_main_button);
+        final TextView exit = (TextView)findViewById(R.id.exit_main_button);
 
         play.setTypeface(custom_font);
         leader.setTypeface(custom_font);
         shop.setTypeface(custom_font);
         exit.setTypeface(custom_font);
 
+
+        edit_button.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View view)
+                    {
+                        name = edit_name.getText().toString().toUpperCase();
+                        if (name.equals("")){
+                            edit_name.setBackgroundColor(Color.RED);
+                        }
+                        else {
+
+                            edit_button.setVisibility(View.INVISIBLE);
+                            edit_name.setVisibility(View.INVISIBLE);
+                            play.setVisibility(View.VISIBLE);
+                            leader.setVisibility(View.VISIBLE);
+                            shop.setVisibility(View.VISIBLE);
+                            exit.setVisibility(View.VISIBLE);
+                            //Log.v("EditText", mEdit.getText().toString());
+                        }
+                    }
+                });
+
     }
 
     // Called when user clicks game_main_button
     public void playGame(View view){
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("USERNAME",name);
         startActivity(intent);
     }
 

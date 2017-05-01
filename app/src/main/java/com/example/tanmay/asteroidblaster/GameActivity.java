@@ -31,8 +31,9 @@ public class GameActivity extends AppCompatActivity {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setBackgroundColor(Color.BLACK);
 
+        String name =  getIntent().getStringExtra("USERNAME");
 
-        gameView = new GameView(this,size.x,size.y,linearLayout);
+        gameView = new GameView(this,size.x,size.y,linearLayout,name);
 
         linearLayout.addView(gameView);
 
