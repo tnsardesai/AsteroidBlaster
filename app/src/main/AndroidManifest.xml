@@ -12,7 +12,6 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -22,29 +21,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"/>
-        <activity
             android:name=".GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_game"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".LeaderboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_leaderboard"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"/>
-        <activity
-            android:name=".ShopActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_shop"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

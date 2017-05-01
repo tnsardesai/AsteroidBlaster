@@ -1,23 +1,21 @@
 package com.example.tanmay.asteroidblaster;
 
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.concurrent.RunnableFuture;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 public class GameView extends SurfaceView implements Runnable{
 
@@ -46,6 +44,12 @@ public class GameView extends SurfaceView implements Runnable{
 
     Context context;
 
+    private static final String DATABASE_NAME = "AsteroidBlaster.db";
+
+    private static final String TABLE_HIGH = "highscores";
+
+    private static final String HIGH_KEY_ID = "id";
+    private static final String HIGH_SCORE = "score";
 
     public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout) {
         super(context);
@@ -76,7 +80,6 @@ public class GameView extends SurfaceView implements Runnable{
         planet = new Planet(context,screenX,screenY);
 
         status = new Status(context,linearLayout);
-
 
     }
 
@@ -134,8 +137,6 @@ public class GameView extends SurfaceView implements Runnable{
             if(distance_scope_asteroid < 100){
                 blast.setX(asteroids[i].getX());
                 blast.setY(asteroids[i].getY());
-                //score++;
-                //score_value.setText(String.valueOf(score));
                 status.update_score();
 
                 asteroids[i].place();
@@ -148,13 +149,7 @@ public class GameView extends SurfaceView implements Runnable{
             if(distance_asteroid_planet < 300 ){
                 blast.setX(asteroids[i].getX());
                 blast.setY(asteroids[i].getY());
-                MediaPlayer mp = MediaPlayer.create(context, R.raw.damage);;
-                //if(mp!=null) {
-                //    mp.reset();
-                    //mp.prepare();
-                //    mp.release();
-                //    mp = null;
-                //}
+                MediaPlayer mp = MediaPlayer.create(context, R.raw.damage);
 
                 mp.start();
 
@@ -171,8 +166,22 @@ public class GameView extends SurfaceView implements Runnable{
 
                 status.update_health();
 
-                if (status.getHealth() == 1){
+                if (status.getHealth() <= 1){
+
+                    DbHelper mDbHelper = new DbHelper(context);
+
+                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                    ContentValues values = new ContentValues();
+                    values.put(HIGH_SCORE,status.getScore());
+
+                    db.insert(TABLE_HIGH,null,values);
+
+                    Intent intent = new Intent(context, LeaderboardActivity.class);
+                    context.startActivity(intent);
+
                     android.os.Process.killProcess(android.os.Process.myPid());
+
                 }
 
                 asteroids[i].place();

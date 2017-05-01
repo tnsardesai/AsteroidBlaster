@@ -1,9 +1,17 @@
 package com.example.tanmay.asteroidblaster;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,12 +31,14 @@ public class Status {
     Context context;
     LinearLayout linearLayout;
 
+
+
     public Status(Context context, LinearLayout linearLayout){
         this.context = context;
         this.linearLayout = linearLayout;
         score=0;
         coins = 0;
-        health = 10;
+        health = 5;
 
         final RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -84,5 +94,9 @@ public class Status {
 
     public int getHealth(){
         return health;
+    }
+
+    public int getScore(){
+        return score;
     }
 }

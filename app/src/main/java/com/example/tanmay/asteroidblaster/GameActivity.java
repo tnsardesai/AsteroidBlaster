@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Display;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -29,11 +31,13 @@ public class GameActivity extends AppCompatActivity {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setBackgroundColor(Color.BLACK);
 
+
         gameView = new GameView(this,size.x,size.y,linearLayout);
 
         linearLayout.addView(gameView);
 
         setContentView(linearLayout);
+
 
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.game);
         mp.setLooping(true);
