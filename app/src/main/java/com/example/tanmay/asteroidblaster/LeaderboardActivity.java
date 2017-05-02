@@ -1,5 +1,6 @@
 package com.example.tanmay.asteroidblaster;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +26,13 @@ public class LeaderboardActivity extends AppCompatActivity {
     private static final String HIGH_NAME = "name";
 
     public DbHelper mDbHelper = new DbHelper(this);
+
+
+    private static final String TABLE_SHOP = "shop";
+    private static final String SHOP_KEY_ID = "ID";
+    private static final String SHOP_ITEM = "item";
+    private static final String SHOP_SELECTED = "selected";
+    private static final String SHOP_BOUGHT = "bought";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,30 @@ public class LeaderboardActivity extends AppCompatActivity {
                 null,
                 sortOrder
         );
+
+        String[] projection1 = {
+                SHOP_KEY_ID,
+                SHOP_ITEM,
+                SHOP_SELECTED,
+                SHOP_BOUGHT
+        };
+
+        Cursor cursor1 = db.query(
+                TABLE_SHOP,
+                projection1,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor1.moveToNext()){
+            Log.d("SHOP","name: " + cursor1.getString(cursor1.getColumnIndexOrThrow(SHOP_ITEM))
+                    + "selected: " + String.valueOf(cursor1.getLong(cursor1.getColumnIndexOrThrow(SHOP_SELECTED)))
+                    + "bought: " + String.valueOf(cursor1.getLong(cursor1.getColumnIndexOrThrow(SHOP_BOUGHT))));
+        }
+        cursor1.close();
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Grinched.ttf");
 

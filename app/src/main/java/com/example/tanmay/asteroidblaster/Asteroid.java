@@ -33,7 +33,7 @@ public class Asteroid {
 
     public Asteroid(Context context, int screenX, int screenY) {
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_asteroid);
         bitmap = Bitmap.createScaledBitmap(bitmap, ASTEROID_SIZE, ASTEROID_SIZE, true);
 
         minX = 0;

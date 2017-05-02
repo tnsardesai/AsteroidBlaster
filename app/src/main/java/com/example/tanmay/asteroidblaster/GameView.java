@@ -53,6 +53,8 @@ public class GameView extends SurfaceView implements Runnable{
     private static final String HIGH_SCORE = "score";
     private static final String HIGH_NAME = "name";
 
+    private int score_recorded;
+
     String name;
 
     public GameView (Context context, int screenX, int screenY, LinearLayout linearLayout,String name) {
@@ -85,6 +87,8 @@ public class GameView extends SurfaceView implements Runnable{
         planet = new Planet(context,screenX,screenY);
 
         status = new Status(context,linearLayout);
+
+        score_recorded = 0;
 
     }
 
@@ -173,15 +177,19 @@ public class GameView extends SurfaceView implements Runnable{
 
                 if (status.getHealth() <= 1){
 
-                    DbHelper mDbHelper = new DbHelper(context);
+                    if(score_recorded == 0) {
+                        score_recorded = 1;
+                        DbHelper mDbHelper = new DbHelper(context);
 
-                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-                    ContentValues values = new ContentValues();
-                    values.put(HIGH_SCORE,status.getScore());
-                    values.put(HIGH_NAME,name);
+                        ContentValues values = new ContentValues();
+                        values.put(HIGH_SCORE, status.getScore());
+                        values.put(HIGH_NAME, name);
 
-                    db.insert(TABLE_HIGH,null,values);
+                        db.insert(TABLE_HIGH, null, values);
+
+                    }
 
                     Intent intent = new Intent(context, LeaderboardActivity.class);
                     context.startActivity(intent);

@@ -23,7 +23,7 @@ public class Planet{
     public Planet(Context context, int screenX, int screenY) {
         //getting boom image from drawable resource
         bitmap = BitmapFactory.decodeResource
-                (context.getResources(), R.drawable.earth);
+                (context.getResources(), R.drawable.default_planet);
         bitmap = Bitmap.createScaledBitmap(bitmap, PLANET_HEIGHT, PLANET_WIDTH, true);
 
         x = screenX/2 - bitmap.getWidth()/2;

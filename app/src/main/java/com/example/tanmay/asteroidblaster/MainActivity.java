@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
     }
-    /*
+
     // Called when user clicks shop_main_button
     public void openShop(View view){
         Intent intent = new Intent(this, ShopActivity.class);
@@ -93,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Called when user clicks settings_main_button
     public void openSettings(View view){
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = new Intent(this, ShopActivity.class);
         startActivity(intent);
-    }*/
+    }
 
     public void startMusic(){
         mp = MediaPlayer.create(getApplicationContext(), R.raw.main);
