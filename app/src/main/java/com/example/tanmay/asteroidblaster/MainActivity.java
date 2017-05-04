@@ -139,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+        mp.stop();
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
     }

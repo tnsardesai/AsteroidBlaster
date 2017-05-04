@@ -82,6 +82,12 @@ public class GameActivity extends AppCompatActivity {
 
 
     @Override
+    public void onStop(){
+        super.onStop();
+        mp.stop();
+    }
+
+    @Override
     public void onBackPressed(){
         //do nothing
     }
