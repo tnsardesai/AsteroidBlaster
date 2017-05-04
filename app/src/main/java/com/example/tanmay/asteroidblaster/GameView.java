@@ -4,6 +4,7 @@ package com.example.tanmay.asteroidblaster;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -72,7 +74,24 @@ public class GameView extends SurfaceView implements Runnable{
     private static final String HIGH_SCORE = "score";
     private static final String HIGH_NAME = "name";
 
+
+    private static final String TABLE_COIN = "coin";
+    private static final String COIN_ID = "id";
+    private static final String COIN_AMOUNT = "coins";
+
     private int score_recorded;
+
+
+    private static final String TABLE_SOUND = "sound";
+    private static final String SOUND_ID = "id";
+    private static final String SOUND_STATE = "state";
+
+
+    private static final String TABLE_SHOP = "shop";
+    private static final String SHOP_KEY_ID = "ID";
+    private static final String SHOP_ITEM = "item";
+    private static final String SHOP_SELECTED = "selected";
+    private static final String SHOP_BOUGHT = "bought";
 
     String name;
 
@@ -87,6 +106,31 @@ public class GameView extends SurfaceView implements Runnable{
         surfaceHolder = getHolder();
         paint = new Paint();
 
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+
+        String[] projection = {
+                SHOP_KEY_ID,
+                SHOP_ITEM,
+                SHOP_SELECTED,
+                SHOP_BOUGHT
+        };
+
+        String selection = SHOP_SELECTED + " = ?";
+        String[] selectionArgs = {"1"};
+
+        Cursor cursor = db.query(
+                TABLE_SHOP,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
         //adding 100 stars you may increase the number
         int starNums = 100;
         for (int i = 0; i < starNums; i++) {
@@ -98,14 +142,86 @@ public class GameView extends SurfaceView implements Runnable{
         asteroids = new Asteroid[asteroidCount];
         for(int i=0; i<asteroidCount; i++){
             asteroids[i] = new Asteroid(context, screenX, screenY);
+            Bitmap asteroid_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.default_asteroid);
+            asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+            asteroids[i].setBitmap(asteroid_bit);
 
+        }
+
+        planet = new Planet(context,screenX,screenY);
+
+        cursor.moveToNext();
+        if(cursor.getString(cursor.getColumnIndexOrThrow(SHOP_ITEM)).equals("default")){
+            Bitmap planet_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.default_planet);
+            planet_bit = Bitmap.createScaledBitmap(planet_bit, 400, 400, true);
+            planet.setBitmap(planet_bit);
+
+            for(int i=0; i<asteroidCount; i++){
+                Bitmap asteroid_bit = BitmapFactory.decodeResource
+                        (context.getResources(), R.drawable.default_asteroid);
+                asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+                asteroids[i].setBitmap(asteroid_bit);
+            }
+
+        }
+        else if (cursor.getString(cursor.getColumnIndexOrThrow(SHOP_ITEM)).equals("cookiemonster")){
+            Bitmap planet_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.cookie_planet);
+            planet_bit = Bitmap.createScaledBitmap(planet_bit, 400, 400, true);
+            planet.setBitmap(planet_bit);
+
+            for(int i=0; i<asteroidCount; i++){
+                Bitmap asteroid_bit = BitmapFactory.decodeResource
+                        (context.getResources(), R.drawable.cookie_asteroid);
+                asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+                asteroids[i].setBitmap(asteroid_bit);
+            }
+        }
+        else if (cursor.getString(cursor.getColumnIndexOrThrow(SHOP_ITEM)).equals("breakingbad")){
+            Bitmap planet_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.breakingbad_planet);
+            planet_bit = Bitmap.createScaledBitmap(planet_bit, 400, 400, true);
+            planet.setBitmap(planet_bit);
+
+            for(int i=0; i<asteroidCount; i++){
+                Bitmap asteroid_bit = BitmapFactory.decodeResource
+                        (context.getResources(), R.drawable.breakingbad_asteroid);
+                asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+                asteroids[i].setBitmap(asteroid_bit);
+            }
+        }
+        else if (cursor.getString(cursor.getColumnIndexOrThrow(SHOP_ITEM)).equals("starwars")){
+            Bitmap planet_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.starwars_planet);
+            planet_bit = Bitmap.createScaledBitmap(planet_bit, 400, 400, true);
+            planet.setBitmap(planet_bit);
+
+            for(int i=0; i<asteroidCount; i++){
+                Bitmap asteroid_bit = BitmapFactory.decodeResource
+                        (context.getResources(), R.drawable.starwars_asteroid);
+                asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+                asteroids[i].setBitmap(asteroid_bit);
+            }
+        }
+        else if (cursor.getString(cursor.getColumnIndexOrThrow(SHOP_ITEM)).equals("khalili")){
+            Bitmap planet_bit = BitmapFactory.decodeResource
+                    (context.getResources(), R.drawable.khalili_planet);
+            planet_bit = Bitmap.createScaledBitmap(planet_bit, 400, 400, true);
+            planet.setBitmap(planet_bit);
+
+            for(int i=0; i<asteroidCount; i++){
+                Bitmap asteroid_bit = BitmapFactory.decodeResource
+                        (context.getResources(), R.drawable.khalili_asteroid);
+                asteroid_bit = Bitmap.createScaledBitmap(asteroid_bit, 300, 300, true);
+                asteroids[i].setBitmap(asteroid_bit);
+            }
         }
 
         scope = new Scope(context,screenX,screenY);
 
         blast = new Blast(context);
-
-        planet = new Planet(context,screenX,screenY);
 
         heart = new Powerup(context,screenX,screenY);
 
@@ -290,6 +406,30 @@ public class GameView extends SurfaceView implements Runnable{
 
                 mp.start();
 
+                DbHelper mDbHelper = new DbHelper(context);
+
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                String[] projection_sound = {
+                        SOUND_STATE
+                };
+
+                Cursor cursor_sound = db.query(
+                        TABLE_SOUND,
+                        projection_sound,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                cursor_sound.moveToNext();
+                if(cursor_sound.getLong(cursor_sound.getColumnIndexOrThrow(SOUND_STATE)) == 0){
+                    mp.setVolume(0,0);
+                }
+                cursor_sound.close();
+
                 mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
@@ -308,15 +448,35 @@ public class GameView extends SurfaceView implements Runnable{
 
                     if(score_recorded == 0) {
                         score_recorded = 1;
-                        DbHelper mDbHelper = new DbHelper(context);
-
-                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
                         ContentValues values = new ContentValues();
                         values.put(HIGH_SCORE, status.getScore());
                         values.put(HIGH_NAME, name);
 
                         db.insert(TABLE_HIGH, null, values);
+
+                        String[] projection = {
+                                COIN_AMOUNT
+                        };
+
+                        Cursor cursor = db.query(
+                                TABLE_COIN,
+                                projection,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                        );
+
+                        cursor.moveToNext();
+                        status.setCoins(status.getCoins() + cursor.getInt(cursor.getColumnIndexOrThrow(COIN_AMOUNT)));
+
+                        ContentValues coin_value = new ContentValues();
+                        coin_value.put(COIN_AMOUNT, status.getCoins());
+                        db.update(TABLE_COIN,coin_value,null,null);
+
+                        cursor.close();
 
                     }
 

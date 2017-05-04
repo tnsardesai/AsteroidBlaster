@@ -61,7 +61,7 @@ public class Status {
         public void run() {
             // do whatever you want to change here, like:
             //score++;
-            status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
+            status_text.setText("SCORE: " + String.valueOf(score) + "\t\tCOINS: " + String.valueOf(coins) + "\t\tHEALTH: " + String.valueOf(health));
         }
     };
 
@@ -69,7 +69,7 @@ public class Status {
         public void run() {
             // do whatever you want to change here, like:
             coins++;
-            status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
+            status_text.setText("SCORE: " + String.valueOf(score) + "\t\tCOINS: " + String.valueOf(coins) + "\t\tHEALTH: " + String.valueOf(health));
         }
     };
 
@@ -77,7 +77,7 @@ public class Status {
         public void run() {
             // do whatever you want to change here, like:
             //health--;
-            status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
+            status_text.setText("SCORE: " + String.valueOf(score) + "\t\tCOINS: " + String.valueOf(coins) + "\t\tHEALTH: " + String.valueOf(health));
         }
     };
 

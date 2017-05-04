@@ -1,11 +1,14 @@
 package com.example.tanmay.asteroidblaster;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +20,44 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mp;
     String name;
 
+    private static final String TABLE_SOUND = "sound";
+    private static final String SOUND_ID = "id";
+    private static final String SOUND_STATE = "state";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startMusic();
+        DbHelper mDbHelper = new DbHelper(this);
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        String[] projection = {
+                SOUND_STATE
+        };
+
+        Cursor cursor = db.query(
+                TABLE_SOUND,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.main);
+        mp.setLooping(true);
+        mp.start();
+
+        cursor.moveToNext();
+        if(cursor.getLong(cursor.getColumnIndexOrThrow(SOUND_STATE)) == 0){
+            mp.setVolume(0,0);
+        }
+        cursor.close();
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Grinched.ttf");
 
@@ -98,29 +133,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startMusic(){
-        mp = MediaPlayer.create(getApplicationContext(), R.raw.main);
-        mp.setLooping(true);
-        mp.start();
-    }
-
     @Override
     public void onBackPressed(){
         //do nothing
     }
 
     @Override
-    public void onStop(){
-        super.onStop();
-        mp.stop();
-        mp.reset();
-        mp.release();
-    }
-
-    @Override
     public void onResume(){
         super.onResume();
-        startMusic();
     }
 
     // Called when user clicks exit_main_button

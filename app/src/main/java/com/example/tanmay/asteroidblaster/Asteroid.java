@@ -139,6 +139,8 @@ public class Asteroid {
         return bitmap;
     }
 
+    public void setBitmap(Bitmap bitmap) {this.bitmap = bitmap; }
+
     public int getX() {
         return x;
     }
