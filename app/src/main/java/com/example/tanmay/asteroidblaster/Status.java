@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,6 +49,10 @@ public class Status {
         status_text = new TextView(context);
         status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
         status_text.setTextColor(Color.WHITE);
+        status_text.setGravity(Gravity.CENTER);
+        Typeface custom_font = Typeface.createFromAsset(context.getAssets(), "fonts/Grinched.ttf");
+        status_text.setTypeface(custom_font);
+        status_text.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         linearLayout.addView(status_text);
 
     }
@@ -54,7 +60,7 @@ public class Status {
     private final Runnable mUpdateScore = new Runnable() {
         public void run() {
             // do whatever you want to change here, like:
-            score++;
+            //score++;
             status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
         }
     };
@@ -70,7 +76,7 @@ public class Status {
     private final Runnable mUpdateHealth = new Runnable() {
         public void run() {
             // do whatever you want to change here, like:
-            health--;
+            //health--;
             status_text.setText("SCORE: " + String.valueOf(score) + "\tCOINS: " + String.valueOf(coins) + "\tHEALTH: " + String.valueOf(health));
         }
     };
@@ -79,17 +85,14 @@ public class Status {
 
     public void update_score(){
         mHandler.post(mUpdateScore);
-        //score_value.setText(String.valueOf(score));
     }
 
     public void update_coins(){
         mHandler.post(mUpdateCoins);
-        //score_value.setText(String.valueOf(score));
     }
 
     public void update_health(){
         mHandler.post(mUpdateHealth);
-        //score_value.setText(String.valueOf(score));
     }
 
     public int getHealth(){
@@ -98,5 +101,21 @@ public class Status {
 
     public int getScore(){
         return score;
+    }
+
+    public int getCoins(){
+        return coins;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    public void setHealth(int health){
+        this.health = health;
+    }
+
+    public void setCoins(int coins){
+        this.coins = coins;
     }
 }

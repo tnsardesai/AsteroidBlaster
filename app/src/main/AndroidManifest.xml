@@ -30,10 +30,16 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ShopActivity"
+        <activity
+            android:name=".ShopActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" ></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

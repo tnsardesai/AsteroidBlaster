@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.tanmay.asteroidblaster.SettingsActivity">
+
+    <CheckBox
+        android:id="@+id/sound_checkbox"
+        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="SOUND"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/howto_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/howto_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        android:onClick="openHowTo"
+        android:text="Instructions"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sound_checkbox" />
+
+    <ImageButton
+        android:id="@+id/home_button"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/home"
+        android:onClick="openMain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="RANDOM"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/instructions_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:drawable/btn_dialog"
+        android:onClick="closeHowTo"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toRightOf="@+id/instructions"
+        app:layout_constraintTop_toTopOf="@+id/instructions" />
+
+</android.support.constraint.ConstraintLayout>

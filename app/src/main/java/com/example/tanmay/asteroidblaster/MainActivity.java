@@ -30,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
         final TextView leader = (TextView)findViewById(R.id.leadersb_main_button);
         final TextView shop = (TextView)findViewById(R.id.shop_main_button);
         final TextView exit = (TextView)findViewById(R.id.exit_main_button);
+        final EditText name = (EditText)findViewById(R.id.edit_name);
+        final Button select = (Button)findViewById(R.id.send_name);
 
         play.setTypeface(custom_font);
         leader.setTypeface(custom_font);
         shop.setTypeface(custom_font);
         exit.setTypeface(custom_font);
+        name.setTypeface(custom_font);
+        select.setTypeface(custom_font);
 
     }
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Called when user clicks settings_main_button
     public void openSettings(View view){
-        Intent intent = new Intent(this, ShopActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

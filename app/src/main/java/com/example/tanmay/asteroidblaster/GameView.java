@@ -5,15 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -39,7 +39,26 @@ public class GameView extends SurfaceView implements Runnable{
     //defining a boom object to display blast
     private Blast blast;
 
+    private Blast powerup;
+    private Bitmap powerup_bitmap;
+
     private Planet planet;
+
+    private Powerup heart;
+
+    private Powerup coin;
+    private Bitmap coin_bitmap;
+
+    private Powerup plus5;
+    private Bitmap plus5_bitmap;
+
+    private Bitmap pause;
+    private Bitmap play;
+    private Bitmap restart;
+    private Bitmap exit;
+
+    private int screenX;
+    private int screenY;
 
     private Status status;
 
@@ -62,6 +81,8 @@ public class GameView extends SurfaceView implements Runnable{
 
         this.context = context;
         this.name = name;
+        this.screenX = screenX;
+        this.screenY = screenY;
 
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -86,6 +107,40 @@ public class GameView extends SurfaceView implements Runnable{
 
         planet = new Planet(context,screenX,screenY);
 
+        heart = new Powerup(context,screenX,screenY);
+
+        coin = new Powerup(context,screenX,screenY);
+        coin_bitmap = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.coin);
+        coin_bitmap = Bitmap.createScaledBitmap(coin_bitmap, coin.getSIZE(), coin.getSIZE(), true);
+        coin.setBitmap(coin_bitmap);
+
+        plus5 = new Powerup(context,screenX,screenY);
+        plus5_bitmap = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.plus5);
+        plus5_bitmap = Bitmap.createScaledBitmap(plus5_bitmap, plus5.getSIZE(), plus5.getSIZE(), true);
+        plus5.setBitmap(plus5_bitmap);
+
+        powerup = new Blast(context);
+        powerup_bitmap = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.powerup);
+        powerup_bitmap = Bitmap.createScaledBitmap(powerup_bitmap, 400, 400, true);
+        powerup.setBitmap(powerup_bitmap);
+
+        pause = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.pause);
+        pause = Bitmap.createScaledBitmap(pause, 200, 200, true);
+        play = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.play);
+        play = Bitmap.createScaledBitmap(play, 200, 200, true);
+        restart = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.restart);
+        restart = Bitmap.createScaledBitmap(restart, 200, 200, true);
+        exit = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.exit);
+        exit = Bitmap.createScaledBitmap(exit, 200, 200, true);
+
+
         status = new Status(context,linearLayout);
 
         score_recorded = 0;
@@ -94,12 +149,17 @@ public class GameView extends SurfaceView implements Runnable{
 
     @Override
     public void run(){
-        while (playing){
-            update();
+        while (true){
+            if(playing) {
+                update();
 
-            draw();
+                draw();
 
-            control();
+                control();
+            }
+            else {
+                draw();
+            }
         }
 
     }
@@ -117,7 +177,31 @@ public class GameView extends SurfaceView implements Runnable{
                 //do something here
                 int touchX = Math.round(motionEvent.getX());
                 int touchY = Math.round(motionEvent.getY());
-                scope.setMoving(touchX,touchY);
+
+                if (touchX >= screenX-200 && touchY >= screenY-300){
+                    if (playing) {
+                        playing = false;
+                    }
+                    else {
+                        playing = true;
+                    }
+                }
+                else if (touchX >= screenX-450 && touchX <= screenX-250 && touchY >= screenY-300 && !playing){
+
+                    Intent intent = new Intent(context, GameActivity.class);
+                    intent.putExtra("USERNAME",name);
+                    context.startActivity(intent);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+
+                }
+                else if (touchX >= screenX-700 && touchX <= screenX-500 && touchY >= screenY-300 && !playing){
+
+                    android.os.Process.killProcess(android.os.Process.myPid());
+
+                }
+                else {
+                    scope.setMoving(touchX,touchY);
+                }
                 break;
         }
         return true;
@@ -125,14 +209,57 @@ public class GameView extends SurfaceView implements Runnable{
 
     private void update() {
         scope.update();
+        heart.update();
+        coin.update();
+        plus5.update();
 
         blast.setX(-500);
         blast.setY(-500);
+
+        powerup.setX(-500);
+        powerup.setY(-500);
 
 
         //Updating the stars with player speed
         for (Star s : stars) {
             s.update();
+        }
+
+
+        double distance_scope_heart = Math.sqrt(Math.pow((double)(
+                scope.getCollisionX() - heart.getCollisionX()),2) +
+                Math.pow((double)(scope.getCollisionY() - heart.getCollisionY()),2));
+
+        double distance_scope_coin = Math.sqrt(Math.pow((double)(
+                scope.getCollisionX() - coin.getCollisionX()),2) +
+                Math.pow((double)(scope.getCollisionY() - coin.getCollisionY()),2));
+
+        double distance_scope_plus5 = Math.sqrt(Math.pow((double)(
+                scope.getCollisionX() - plus5.getCollisionX()),2) +
+                Math.pow((double)(scope.getCollisionY() - plus5.getCollisionY()),2));
+
+
+        if (distance_scope_heart < 150){
+            heart.setCaptured(true);
+            status.setHealth(status.getHealth() + 1);
+            status.update_health();
+            powerup.setX(heart.getPosition_x() - 125);
+            powerup.setY(heart.getPosition_y() - 125);
+        }
+
+        if (distance_scope_coin < 150){
+            coin.setCaptured(true);
+            status.update_coins();
+            powerup.setX(coin.getPosition_x() - 125);
+            powerup.setY(coin.getPosition_y() - 125);
+        }
+
+        if (distance_scope_plus5 < 150){
+            plus5.setCaptured(true);
+            status.setScore(status.getScore() + 5);
+            status.update_score();
+            powerup.setX(plus5.getPosition_x() - 125);
+            powerup.setY(plus5.getPosition_y() - 125);
         }
 
         //updating the enemy coordinate with respect to player speed
@@ -146,6 +273,7 @@ public class GameView extends SurfaceView implements Runnable{
             if(distance_scope_asteroid < 100){
                 blast.setX(asteroids[i].getX());
                 blast.setY(asteroids[i].getY());
+                status.setScore(status.getScore() + 1);
                 status.update_score();
 
                 asteroids[i].place();
@@ -173,9 +301,10 @@ public class GameView extends SurfaceView implements Runnable{
                     }
                 });
 
+                status.setHealth(status.getHealth() - 1);
                 status.update_health();
 
-                if (status.getHealth() <= 1){
+                if (status.getHealth() <= 0){
 
                     if(score_recorded == 0) {
                         score_recorded = 1;
@@ -194,7 +323,7 @@ public class GameView extends SurfaceView implements Runnable{
                     Intent intent = new Intent(context, LeaderboardActivity.class);
                     context.startActivity(intent);
 
-                    //android.os.Process.killProcess(android.os.Process.myPid());
+                    android.os.Process.killProcess(android.os.Process.myPid());
 
                 }
 
@@ -241,13 +370,35 @@ public class GameView extends SurfaceView implements Runnable{
             );
 
             canvas.drawBitmap(
+                    powerup.getBitmap(),
+                    powerup.getX(),
+                    powerup.getY(),
+                    paint
+            );
+
+            canvas.drawBitmap(
                     planet.getBitmap(),
                     planet.getX(),
                     planet.getY(),
                     paint
             );
 
+            canvas.drawBitmap(heart.getBitmap(),heart.getX(),heart.getY(),paint);
+
+            canvas.drawBitmap(coin_bitmap,coin.getX(),coin.getY(),paint);
+
+            canvas.drawBitmap(plus5_bitmap,plus5.getX(),plus5.getY(),paint);
+
             canvas.drawBitmap(scope.getBitmap(),scope.getX(),scope.getY(),paint);
+
+            if (playing){
+                canvas.drawBitmap(pause,screenX-200,screenY-300,paint);
+            }
+            else{
+                canvas.drawBitmap(play,screenX-200,screenY-300,paint);
+                canvas.drawBitmap(restart,screenX-450,screenY-300,paint);
+                canvas.drawBitmap(exit,screenX-700,screenY-300,paint);
+            }
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
